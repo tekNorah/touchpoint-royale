@@ -7,7 +7,7 @@ server = 'pointdbserver.database.windows.net'
 database = 'NCR-MothersEntJA'
 username = 'Norah'  # replace with your username
 password = '!WSX#Rrrr45'  # replace with your password
-driver = '{ODBC Driver 17 for SQL Server}'
+driver = '{ODBC Driver 18 for SQL Server}'
 
 # Establish the connection
 connection_string = f"""
