@@ -10,8 +10,7 @@
 
 [What and Why](#whatandwhy) •
 [Quickstart](#quickstart) •
-[Structure](#structure) •
-[Meta](#meta)
+[Running the Script](#running-the-script)
 
 </div>
 
@@ -20,16 +19,13 @@
 - [Introduction Videos](#introduction-videos)
 - [What and Why](#what-and-why)
 - [Quickstart](#quickstart)
-  - [Setting up the fabric commands](#setting-up-the-fabric-commands)
-  - [Using the fabric client](#using-the-fabric-client)
-  - [Just use the Patterns](#just-use-the-patterns)
-  - [Create your own Fabric Mill](#create-your-own-fabric-mill)
-- [Structure](#structure)
-  - [Components](#components)
-  - [CLI-native](#cli-native)
-  - [Directly calling Patterns](#directly-calling-patterns)
-- [Meta](#meta)
-  - [Primary contributors](#primary-contributors)
+  - [Required Python Version](#required-python-version-)
+  - [Using Command Prompt or PowerShell](#using-command-prompt-or-powershell)
+  - [If Python is Not Installed](#if-python-is-not-installed)
+  - [Troubleshooting](#troubleshooting)
+  - [Downloading the script](#downloading-the-script)
+  - [Installing the Packages](#installing-the-packages)
+- [Running the Script](#running-the-script)
 
 <br />
 
@@ -38,8 +34,6 @@
 The purpose of this Python scrip is to 
 
 ## Quickstart
-
-The most feature-rich way to use Fabric is to use the `fabric` client, which can be found under <a href="https://github.com/danielmiessler/fabric/tree/main/installer/client">`/client`</a> directory in this repository.
 
 ### Required Python Version 
 Ensure you have at least python3.6 installed on you operating system. Otherwise, when you attempt to run the pip install commands, the project will fail to build due to certain dependencies. 
@@ -128,20 +122,65 @@ git clone https://github.com/tekNorah/touchpoint-meja.git
 cd touchpoint-meja
 ```
 
-4. Install Packages with `pipx`
-   1. Install `pipx` if you haven't already:
-      ```sh
-      brew install pipx
-      ```
+### Installing the Packages
 
-   2. Use `pipx` to install the required packages:
-      ```sh
-      pipx install pyodbc pandas openpyxl
-      ```
+On Windows, you can install Python packages using either pip or pipenv. Here's how to do it using pip:
 
-5. Run the script.
+#### Option 1: Using pip
 
-```sh
-# Run the script using python
-python azure_sql_to_excel.py
-```
+1. **Open Command Prompt**:
+   - Press `Win + R`, type `cmd`, and press `Enter`.
+
+2. **Navigate to Your Script's Directory**:
+   - Use the `cd` command to change the directory to where your script is located. For example:
+     ```sh
+     cd C:\path\to\your\script
+     ```
+
+3. **Install Required Packages**:
+   - Use pip to install the required packages (`pyodbc`, `pandas`, `openpyxl`):
+     ```sh
+     pip install pyodbc pandas openpyxl
+     ```
+
+4. **Run Your Script**:
+   - Once the packages are installed, you can run your script:
+     ```sh
+     python azure_sql_to_excel.py
+     ```
+
+#### Option 2: Using pipenv
+
+1. **Open Command Prompt**:
+   - Press `Win + R`, type `cmd`, and press `Enter`.
+
+2. **Navigate to Your Script's Directory**:
+   - Use the `cd` command to change the directory to where your script is located. For example:
+     ```sh
+     cd C:\path\to\your\script
+     ```
+
+3. **Create a Virtual Environment**:
+   - Create a virtual environment using pipenv:
+     ```sh
+     pipenv install
+     ```
+
+4. **Install Required Packages**:
+   - Install the required packages (`pyodbc`, `pandas`, `openpyxl`) within the virtual environment:
+     ```sh
+     pipenv install pyodbc pandas openpyxl
+     ```
+
+5. **Activate the Virtual Environment**:
+   - Activate the virtual environment:
+     ```sh
+     pipenv shell
+     ```
+
+## Running the Script
+1. **Run Your Script**:
+   - Once the virtual environment is activated, you can run your script:
+     ```sh
+     python azure_sql_to_excel.py
+     ```
