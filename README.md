@@ -109,22 +109,39 @@ Follow these steps to get all python related apps installed and configured.
 
 1. Navigate to where you want the project to live on your system.
 
-```bash
+```sh
 # Find a home for the script
 cd /where/you/keep/code
 ```
 
 2. Clone the project to your computer.
 
-```bash
+```sh
 # Clone the project to your computer
 git clone https://github.com/tekNorah/touchpoint-meja.git
 ```
 
 3. Enter the project's main directory
 
-```bash
+```sh
 # Enter the project folder (where you cloned it)
 cd touchpoint-meja
 ```
 
+4. Install Packages with `pipx`
+   1. Install `pipx` if you haven't already:
+      ```sh
+      brew install pipx
+      ```
+
+   2. Use `pipx` to install the required packages:
+      ```sh
+      pipx install pyodbc pandas openpyxl
+      ```
+
+5. Run the script.
+
+```sh
+# Run the script using python
+python azure_sql_to_excel.py
+```
