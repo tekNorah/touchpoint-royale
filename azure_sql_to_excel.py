@@ -593,7 +593,7 @@ try:
     data_frames['Batch_Detail'].GLAMOUNT = data_frames['Batch_Detail'].DTLAMOUNT
     data_frames['Batch_Detail'].BKAMOUNT = data_frames['Batch_Detail'].DTLAMOUNT
 
-    # Add Batch ID column to Header and Detail DataFrames
+    # Assign Batch ID to Header and Detail DataFrames
     batch_id = random.randint(0, 999999)
     data_frames['Batch_Header'].BATCHID = batch_id
     data_frames['Batch_Detail'].BATCHID = batch_id
