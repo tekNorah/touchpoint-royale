@@ -42,6 +42,7 @@ try:
         'Batch_Header': """
             SELECT
                 StoreID,
+                NULL BATCHID,
                 RIGHT('00000'+CAST(ROW_NUMBER() OVER(ORDER BY StoreID, SalesDate) AS VARCHAR(5)),5) AS ENTRYNO,
                 0 AS ENTRYTYPE,
                 MAX(BagNumber) AS REFERENCE,
@@ -594,8 +595,8 @@ try:
 
     # Add Batch ID column to Header and Detail DataFrames
     batch_id = random.randint(0, 999999)
-    data_frames['Batch_Detail'].BATCHID = batch_id
     data_frames['Batch_Header'].BATCHID = batch_id
+    data_frames['Batch_Detail'].BATCHID = batch_id
 
     # Export each DataFrame to a separate Excel sheet
     with pd.ExcelWriter('CASH REPORT.xlsx') as writer:
