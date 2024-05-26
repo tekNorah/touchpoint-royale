@@ -582,10 +582,20 @@ try:
             )AS unpvt;"""
     }
 
-    # Load data into DataFrames
+    # Load data from SQL Database into DataFrames
     data_frames = {}
     for table_name, query in queries.items():
         data_frames[table_name] = pd.read_sql(query, conn)
+
+    # CSVs for the conversions
+    csvs = {
+        'Store_Detail': "Store_Detail.csv",
+        'Account_Detail': "Account_Detail.csv"
+    }
+    # Load data from CSV files into separate DataFrames
+    data_frames2 = {}
+    for table_name, csv in csvs.items():
+        data_frames2[table_name] = pd.read_csv(csv)
 
     # Assign Deposit Amount to multiple columns
     data_frames['Batch_Detail'].DEBITAMT = data_frames['Batch_Detail'].DTLAMOUNT
