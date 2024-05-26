@@ -258,7 +258,7 @@ try:
                     WHEN 'Deposit7' THEN 'CASH SHORTAGE/OVERAGE'
                     WHEN 'Deposit8' THEN 'BNS USD CLEARING A/C'
                     ELSE ACCTDESC END AS ACCTDESC,
-                0 AS ACCTQTYSW,
+                ACCTQTYSW,
                 ACCTTAX,
                 ACCTTAXUF,
                 TAXDESC,
@@ -326,7 +326,7 @@ try:
                 TOTUNAPPL,
                 PJCCOST,
                 NOSUBDETL,
-                'VALUES',
+                0 AS 'VALUES',
                 PROCESSCMD,
                 AMTTAXREC1,
                 AMTTAXREC2,
@@ -657,6 +657,15 @@ try:
       return data_frames['Batch_Detail'][data_frames['Batch_Detail'].ENTRYNO == header_entryno].shape[0]
 
     data_frames['Batch_Header'].NODETAILS = data_frames['Batch_Header'].apply(lambda x: count_details(x['ENTRYNO']), axis=1)
+
+    # Assign HDRDEBIT and HDRCREDIT on Batch Header Datafram based on sum of DEBITAMT and CREDITAMT on Batch Detail
+    def sum_debit(entryno):
+        return data_frames['Batch_Detail'].loc[data_frames['Batch_Detail'].ENTRYNO == entryno, 'DEBITAMT'].sum()
+    def sum_credit(entryno):
+        return data_frames['Batch_Detail'].loc[data_frames['Batch_Detail'].ENTRYNO == entryno, 'CREDITAMT'].sum()
+
+    data_frames['Batch_Header'].HDRDEBIT = data_frames['Batch_Header'].apply(lambda x: sum_debit(x['ENTRYNO']), axis=1)
+    data_frames['Batch_Header'].HDRCREDIT = data_frames['Batch_Header'].apply(lambda x: sum_credit(x['ENTRYNO']), axis=1)
 
     # Create Batch_Miscellaneous DataFrame as subset of Batch Header DataFrame
     data_frames['Batch_Miscellaneous'] = data_frames['Batch_Header'][["BATCHID", "ENTRYNO"]]
