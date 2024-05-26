@@ -435,8 +435,8 @@ try:
                     0 AS TAXQTYSW,
                     0 AS ADJAMOUNT,
                     'FALSE' AS SWJOB,
-                    NULL AS DEBITAMT,
-                    NULL AS CREDITAMT,
+                    0 AS DEBITAMT,
+                    0 AS CREDITAMT,
                     'FALSE' AS SWALLOCATE,
                     0 AS PJCAMT,
                     0 AS PJCDISC,
@@ -598,7 +598,16 @@ try:
         data_frames2[table_name] = pd.read_csv(csv)
 
     # Assign Deposit Amount to multiple columns
-    data_frames['Batch_Detail'].DEBITAMT = data_frames['Batch_Detail'].DTLAMOUNT
+    def debit_amount(DTLAMOUNT):
+        if DTLAMOUNT > 0:
+            return DTLAMOUNT
+        return 0
+    def credit_amount(DTLAMOUNT):
+        if DTLAMOUNT < 0:
+            return DTLAMOUNT
+        return 0
+    data_frames['Batch_Detail'].DEBITAMT = data_frames['Batch_Detail'].apply(lambda x: debit_amount(x['DTLAMOUNT']), axis=1)
+    data_frames['Batch_Detail'].CREDITAMT = data_frames['Batch_Detail'].apply(lambda x: credit_amount(x['DTLAMOUNT']), axis=1)
     data_frames['Batch_Detail'].MISCAMOUNT = data_frames['Batch_Detail'].DTLAMOUNT
     data_frames['Batch_Detail'].GLAMOUNT = data_frames['Batch_Detail'].DTLAMOUNT
     data_frames['Batch_Detail'].BKAMOUNT = data_frames['Batch_Detail'].DTLAMOUNT
