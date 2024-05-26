@@ -589,7 +589,8 @@ try:
     # CSVs for the conversions
     csvs = {
         'Store_Detail': "Store_Detail.csv",
-        'Account_Detail': "Account_Detail.csv"
+        'Account_Detail': "Account_Detail.csv",
+        'Batch_Miscellaneous': 'Batch_Miscellaneous.csv',
     }
 
     # Load data from CSV files into separate DataFrames
@@ -652,6 +653,21 @@ try:
       return data_frames['Batch_Detail'][data_frames['Batch_Detail'].ENTRYNO == header_entryno].shape[0]
 
     data_frames['Batch_Header'].NODETAILS = data_frames['Batch_Header'].apply(lambda x: count_details(x['ENTRYNO']), axis=1)
+
+    # Create Batch_Miscellaneous DataFrame as subset of Batch Header DataFrame
+    data_frames['Batch_Miscellaneous'] = data_frames['Batch_Header'][["BATCHID", "ENTRYNO"]]
+
+    # Add columns from Batch_Miscellaneous DataFrame2 to Batch_Miscellaneous DataFrame
+    data_frames['Batch_Miscellaneous'] = data_frames['Batch_Miscellaneous'].join(data_frames2['Batch_Miscellaneous'])
+
+    # Set Defaults for some columns on Batch_Miscellaneous DataFrame
+    data_frames['Batch_Miscellaneous'].DETAILNO = '0000000200'
+    data_frames['Batch_Miscellaneous'].SWKEEPTOT = 'FALSE'
+    data_frames['Batch_Miscellaneous'].ACCTROW = 1
+    data_frames['Batch_Miscellaneous'].SWAPPROVED = 'FALSE'
+    data_frames['Batch_Miscellaneous'].ACCTYPE = 0
+    data_frames['Batch_Miscellaneous'].COVERTYPE = 0
+    data_frames['Batch_Miscellaneous'].EITYPE = 0
 
     # Export each DataFrame to a separate Excel sheet
     with pd.ExcelWriter('CASH REPORT.xlsx') as writer:
