@@ -54,7 +54,7 @@ try:
                 NULL AS DISTCODE,
                 RIGHT('00'+CAST(1 AS VARCHAR(2)),2) AS CHARGECODE,
                 0 AS CHRGAMOUNT,
-                NULL AS NODETAILS,
+                0 AS NODETAILS,
                 SUM(Amount) AS TOTAMOUNT,
                 0 AS TOTTAX,
                 0 AS TAXPERCNT,
@@ -646,6 +646,12 @@ try:
 
     # ACCTID
     data_frames['Batch_Detail'].ACCTID = merged['AcountID']
+
+    # Assign NODETAILS based on count of matching Batch Detail records on ENTRYNO
+    def count_details(header_entryno):
+      return data_frames['Batch_Detail'][data_frames['Batch_Detail'].ENTRYNO == header_entryno].shape[0]
+
+    data_frames['Batch_Header'].NODETAILS = data_frames['Batch_Header'].apply(lambda x: count_details(x['ENTRYNO']), axis=1)
 
     # Export each DataFrame to a separate Excel sheet
     with pd.ExcelWriter('CASH REPORT.xlsx') as writer:
