@@ -405,7 +405,7 @@ try:
                 SWIGNORE
             FROM
                (SELECT
-                    StoreID,
+                    CONVERT(int, StoreID) AS StoreID,
                     convert(varchar,SalesDate,101) as 'DATE',
                     NULL AS BATCHID,
                     RIGHT('00000'+CAST(ROW_NUMBER() OVER(ORDER BY StoreID, SalesDate) AS VARCHAR(5)),5) AS ENTRYNO,
@@ -614,6 +614,29 @@ try:
     merged['DATE2'] = merged['DATE1'].dt.strftime('%d.%m.%Y')
     merged['TEXTDESC'] = merged['StoreKey'] + " BANK " + merged['DATE2']
     data_frames['Batch_Header'].TEXTDESC = merged['TEXTDESC']
+
+    # Set ACCTDESC to CASH SHORTAGE or OVERAGE based on negative/positve value
+    def cash_desc(ACCTDESC, DTLAMOUNT):
+        if ACCTDESC == "CASH SHORTAGE/OVERAGE":
+            if DTLAMOUNT < 0:
+                return 'CASH SHORTAGE'
+            else:
+                return 'CASH OVERAGE'
+        return ACCTDESC
+    data_frames['Batch_Detail'].ACCTDESC = data_frames['Batch_Detail'].apply(lambda x: cash_desc(x['ACCTDESC'], x['DTLAMOUNT']), axis=1)
+
+    # Assign column values on Batch Detail sheet based on Store and Account Detail DataFrames
+    merged = pd.merge(data_frames['Batch_Detail'], data_frames2['Store_Detail'], on='StoreID', how='left')
+    merged = pd.merge(merged, data_frames2['Account_Detail'], on='ACCTDESC', how='left')
+
+    # TEXTDESC
+    merged['DATE1'] = pd.to_datetime(merged['DATE'])
+    merged['DATE2'] = merged['DATE1'].dt.strftime('%d.%m.%Y')
+    merged['TEXTDESC'] = merged['StoreKey'] + " " + merged['AccountKey'] + " " + merged['DATE2']
+    data_frames['Batch_Detail'].TEXTDESC = merged['TEXTDESC']
+
+    # ACCTID
+    data_frames['Batch_Detail'].ACCTID = merged['AcountID']
 
     # Export each DataFrame to a separate Excel sheet
     with pd.ExcelWriter('CASH REPORT.xlsx') as writer:
