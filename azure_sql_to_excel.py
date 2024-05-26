@@ -591,6 +591,10 @@ try:
         'Store_Detail': "Store_Detail.csv",
         'Account_Detail': "Account_Detail.csv",
         'Batch_Miscellaneous': 'Batch_Miscellaneous.csv',
+        'Batch_Sub_Detail': 'Batch_Sub_Detail.csv',
+        'Batch_Detail_Adjustments': 'Batch_Detail_Adjustments.csv',
+        'Batch_Header_Optional_Fields': 'Batch_Header_Optional_Fields.csv',
+        'Batch_Detail_Optional_Fields': 'Batch_Detail_Optional_Fields.csv'
     }
 
     # Load data from CSV files into separate DataFrames
@@ -668,6 +672,12 @@ try:
     data_frames['Batch_Miscellaneous'].ACCTYPE = 0
     data_frames['Batch_Miscellaneous'].COVERTYPE = 0
     data_frames['Batch_Miscellaneous'].EITYPE = 0
+
+    # Create remaining DataFrames based on CSV Templates
+    data_frames['Batch_Sub_Detail'] = data_frames2['Batch_Sub_Detail']
+    data_frames['Batch_Detail_Adjustments'] = data_frames2['Batch_Detail_Adjustments']
+    data_frames['Batch_Header_Optional_Fields'] = data_frames2['Batch_Header_Optional_Fields']
+    data_frames['Batch_Detail_Optional_Fields'] = data_frames2['Batch_Detail_Optional_Fields']
 
     # Export each DataFrame to a separate Excel sheet
     with pd.ExcelWriter('CASH REPORT.xlsx') as writer:
