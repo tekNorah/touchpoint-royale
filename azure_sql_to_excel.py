@@ -2,7 +2,6 @@ import random
 
 import pyodbc
 import pandas as pd
-# import openpyxl
 import os
 
 
@@ -41,7 +40,7 @@ try:
     queries = {
         'Batch_Header': """
             SELECT
-                StoreID,
+                CONVERT(int, StoreID) AS StoreID,
                 NULL BATCHID,
                 RIGHT('00000'+CAST(ROW_NUMBER() OVER(ORDER BY StoreID, SalesDate) AS VARCHAR(5)),5) AS ENTRYNO,
                 0 AS ENTRYTYPE,
@@ -592,6 +591,7 @@ try:
         'Store_Detail': "Store_Detail.csv",
         'Account_Detail': "Account_Detail.csv"
     }
+
     # Load data from CSV files into separate DataFrames
     data_frames2 = {}
     for table_name, csv in csvs.items():
@@ -607,6 +607,13 @@ try:
     batch_id = random.randint(0, 999999)
     data_frames['Batch_Header'].BATCHID = batch_id
     data_frames['Batch_Detail'].BATCHID = batch_id
+
+    # Assign TEXTDESC on Batch Header sheet based on Store Detail DataFrame
+    merged = pd.merge(data_frames['Batch_Header'], data_frames2['Store_Detail'], on='StoreID', how='left')
+    merged['DATE1'] = pd.to_datetime(merged['DATE'])
+    merged['DATE2'] = merged['DATE1'].dt.strftime('%d.%m.%Y')
+    merged['TEXTDESC'] = merged['StoreKey'] + " BANK " + merged['DATE2']
+    data_frames['Batch_Header'].TEXTDESC = merged['TEXTDESC']
 
     # Export each DataFrame to a separate Excel sheet
     with pd.ExcelWriter('CASH REPORT.xlsx') as writer:
