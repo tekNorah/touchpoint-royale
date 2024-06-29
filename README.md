@@ -1,6 +1,6 @@
 # `touchpoint-royale`
 
-![Static Badge](https://img.shields.io/badge/goal-Transform_Azure_SQL_Data_to_Excel-purple)
+![Static Badge](https://img.shields.io/badge/goal-Transform_MS_SQL_Data_to_Excel-purple)
 <br />
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
