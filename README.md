@@ -1,11 +1,11 @@
-# `touchpoint-meja`
+# `touchpoint-royale`
 
 ![Static Badge](https://img.shields.io/badge/goal-Transform_Azure_SQL_Data_to_Excel-purple)
 <br />
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 <p class="align center">
-<h4><code>touchpoint-meja</code> is a Python script for transforming touchpoint data for the <code>NCR-MothersEntJA</code> database to an Excel Workbook.</h4>
+<h4><code>touchpoint-royale</code> is a Python script for transforming touchpoint data for the <code>NCR-RoyaleHoldingsJA</code> MS SQL database to an Excel Workbook.</h4>
 </p>
 
 [What and Why](#whatandwhy) •
@@ -112,14 +112,14 @@ cd /where/you/keep/code
 
 ```sh
 # Clone the project to your computer
-git clone https://github.com/tekNorah/touchpoint-meja.git
+git clone https://github.com/tekNorah/touchpoint-royale.git
 ```
 
 3. Enter the project's main directory
 
 ```sh
 # Enter the project folder (where you cloned it)
-cd touchpoint-meja
+cd touchpoint-royale
 ```
 
 ### Installing the Packages
