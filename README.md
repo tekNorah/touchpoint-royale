@@ -8,7 +8,7 @@
 <h4><code>touchpoint-royale</code> is a Python script for transforming touchpoint data for the <code>NCR-RoyaleHoldingsJA</code> MS SQL database to an Excel Workbook.</h4>
 </p>
 
-[What and Why](#whatandwhy) •
+[What and Why](#what-and-why) •
 [Quickstart](#quickstart) •
 [Running the Script](#running-the-script)
 
