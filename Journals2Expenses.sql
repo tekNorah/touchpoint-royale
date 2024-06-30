@@ -22,4 +22,4 @@ WHERE v.VendorName IN ('Petty Cash',
                        'NCB MC 7604',
                        'Business Edge 2490',
                        'Business Elite 5240')
-  AND ih.InvoiceDate = '2023-12-29 00:00:00.000'
+  AND ih.InvoiceDate = 'INVOICE_DATE'

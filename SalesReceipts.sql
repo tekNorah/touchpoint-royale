@@ -14,5 +14,5 @@ SELECT
     NULL AS 'Product/Service Amount',
     'JUICI' AS 'Product/Service Class'
 FROM ST_Register AS r
-WHERE (r.SalesDate BETWEEN DATEADD(DAY,-7,'2021-10-07')
-    AND '2021-10-07')
+WHERE (r.SalesDate BETWEEN DATEADD(DAY,-7,'INVOICE_DATE')
+    AND 'INVOICE_DATE')
