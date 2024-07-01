@@ -1,6 +1,6 @@
 SELECT
     ih.InvoiceID AS 'Ref No',
-    ih.InvoiceDate AS 'Payment Date',
+    CONVERT(varchar,ih.InvoiceDate,103) AS 'Payment Date',
     ih.Notes AS 'Memo',
     v.AccountNumber AS 'Account',
     ic.ItemCategoryNumber,

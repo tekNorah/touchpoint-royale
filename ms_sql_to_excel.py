@@ -59,7 +59,7 @@ def main(invoice_date):
 
         # Queries for the tables
         queries = {
-            'Journals_to_Expenses': sql_query_j2e,
+            'Journals to Expenses': sql_query_j2e,
             'Sales_Receipts': sql_query_sr
         }
 
@@ -77,6 +77,21 @@ def main(invoice_date):
         data_frames2 = {}
         for table_name, csv in csvs.items():
             data_frames2[table_name] = pd.read_csv(csv)
+
+        # Assign Expense Account on Journals to Expenses sheet based on AP Categories DataFrame
+        merged = pd.merge(data_frames['Journals to Expenses'], data_frames2['AP_Categories'], on='ItemCategoryNumber', how='left')
+        data_frames['Journals to Expenses']['Expense Account'] = merged['GLCode']
+
+        # Remove fields not needed from data frames
+        data_frames['Journals to Expenses'] = data_frames['Journals to Expenses'].drop(columns=['ItemCategoryNumber'])
+        data_frames['Journals to Expenses'] = data_frames['Journals to Expenses'].drop(columns=['ItemCategoryName'])
+
+        # Format the invoice date
+        invoice_date_str = invoice_date.strftime("%Y%m%d")
+
+        # Prefix the DataFrame name with the formatted invoice date
+        new_df_name = f"{invoice_date_str}-Journals to Expenses"
+        data_frames[new_df_name] = data_frames.pop('Journals to Expenses')
 
         # Export each DataFrame to a separate Excel sheet
         with pd.ExcelWriter('INVOICE REPORT.xlsx') as writer:
