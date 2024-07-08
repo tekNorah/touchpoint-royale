@@ -146,7 +146,7 @@ On Windows, you can install Python packages using either pip or pipenv. Here's h
 4. **Run Your Script**:
    - Once the packages are installed, you can run your script:
      ```sh
-     python azure_sql_to_excel.py
+     python ms_sql_to_excel.py YYYY-MM-DD
      ```
 
 #### Option 2: Using pipenv
@@ -182,5 +182,5 @@ On Windows, you can install Python packages using either pip or pipenv. Here's h
 1. **Run Your Script**:
    - Once the virtual environment is activated, you can run your script:
      ```sh
-     python azure_sql_to_excel.py
+     python ms_sql_to_excel.py YYYY-MM-DD
      ```
