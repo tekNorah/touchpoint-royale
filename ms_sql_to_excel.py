@@ -81,7 +81,7 @@ def main(invoice_date):
         merged = pd.merge(data_frames['Journals to Expenses'], data_frames2['AP_Categories'], on='ItemCategoryNumber', how='left')
         data_frames['Journals to Expenses']['Expense Account'] = merged['GLCode']
 
-        # Remove fields not needed from data frames
+        # Remove columns not needed from Journals to Expenses DataFrame
         data_frames['Journals to Expenses'] = data_frames['Journals to Expenses'].drop(columns=['ItemCategoryNumber'])
         data_frames['Journals to Expenses'] = data_frames['Journals to Expenses'].drop(columns=['ItemCategoryName'])
 
@@ -91,6 +91,35 @@ def main(invoice_date):
         # Prefix the DataFrame name with the formatted invoice date
         new_df_name = f"{invoice_date_str}-Journals to Expenses"
         data_frames[new_df_name] = data_frames.pop('Journals to Expenses')
+
+        # Rename the existing 'Product/Service Amount' column to avoid conflict
+        data_frames['Sales_Receipts'].rename(columns={'Product/Service Amount': 'Original Product/Service Amount'}, inplace=True)
+
+        # Pivot the specified columns to rows for Sales_Receipts DataFrame
+        sales_receipts = data_frames['Sales_Receipts'].melt(
+            id_vars=['Sales Receipt No', 'Customer', 'Sales Receipt Date', 'Deposit To', 'Payment method', 'Global Tax Calculation', 'Product/Service Description', 'Product/Service Class', 'Original Product/Service Amount'],
+            value_vars=['Cash Sales - Other', 'Cash Sales - Beverages', 'Cash Sales - Juici', '12260 GCT Payable/Receivable'],
+            var_name='Product/Service',
+            value_name='Product/Service Amount'
+        )
+
+        # Update the data_frames dictionary with the transformed DataFrame
+        data_frames['Sales_Receipts'] = sales_receipts
+
+        # Remove columns not needed from Sales_Receipts DataFrame
+        data_frames['Sales_Receipts'] = data_frames['Sales_Receipts'].drop(columns=['Original Product/Service Amount'])
+
+        # Update all rows (excluding the first) with empty strings for specific columns
+        data_frames['Sales_Receipts'].loc[1:, ['Customer', 'Sales Receipt Date', 'Deposit To', 'Payment method']] = ''
+
+        # Set the Sales Receipt Date (YYYY/MMDD)
+        data_frames['Sales_Receipts']['Sales Receipt No'] = invoice_date.strftime('%Y/%m%d')
+
+        # Set the value of 'Product/Service Class' to an empty string for the last row (chained assignment)
+        data_frames['Sales_Receipts'].iloc[-1, data_frames['Sales_Receipts'].columns.get_loc('Product/Service Class')] = ''
+
+        # Reorder the columns in the Sales_Receipts DataFrame
+        data_frames['Sales_Receipts'] = data_frames['Sales_Receipts'][['Sales Receipt No', 'Customer', 'Sales Receipt Date', 'Deposit To', 'Payment method', 'Global Tax Calculation', 'Product/Service', 'Product/Service Description', 'Product/Service Amount', 'Product/Service Class']]
 
         # Export each DataFrame to a separate Excel sheet
         with pd.ExcelWriter('INVOICE REPORT.xlsx') as writer:
