@@ -14,6 +14,6 @@ SELECT
     NULL AS 'Product/Service Amount',
     'JUICI' AS 'Product/Service Class'
 FROM ST_Register AS r
-WHERE (r.SalesDate BETWEEN DATEADD(DAY,-7,'INVOICE_DATE')
+WHERE (r.SalesDate BETWEEN DATEADD(DAY,-6,'INVOICE_DATE')
     AND 'INVOICE_DATE')
 GROUP BY SiteNumber
